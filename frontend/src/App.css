@@ -201,4 +201,54 @@
   .mt-10 {
     margin-top: 10rem;
   }
+  .i1 {
+    height: 250px;
+  }
+  .i3 {
+    height: 150px;
+    width: 200px;  
+    margin-top: 0%;
+    /* padding-bottom: 100px; */
+  }
+  .i4 {
+    height: 225px;
+  }
+}
+
+.h1t1 {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.h1t2 {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+}
+
+.i2 {
+  margin-bottom: 50px;
+  height: 150px;
+}
+
+.row-content {
+  margin:0px auto;
+  padding: 50px 0px 50px 0px;
+  border-bottom: 2px ridge;
+  min-height:150px;
+}
+
+.h1t3 {
+  text-align: center;
+}
+
+.i5 {
+  height: 150px;
+  width: 150px;
+}
+
+.i6 {
+  height: 150px;
+}
+
+.h2t1 {
+  background-color: rgba(0, 0, 0, 0.2);
 }

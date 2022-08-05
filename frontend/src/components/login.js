@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import {Collapse, Container, Navbar, Nav, NavbarBrand, NavbarToggler, NavItem, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, NavbarText} from 'reactstrap'; 
+
+import {
+    Collapse, Container, Navbar, NavLink, Nav, NavbarBrand, 
+    NavbarToggler, NavItem, UncontrolledDropdown, DropdownToggle, 
+    DropdownMenu, DropdownItem, NavbarText, UncontrolledCarousel} 
+from 'reactstrap'; 
 
 function Login() {
     
@@ -13,44 +17,54 @@ function Login() {
     return (
         <div>
             <div>
-            <Navbar color='light' light expand="md">
+            <Navbar color='dark' dark expand="md" >
                 <NavbarBrand href='/'>Title</NavbarBrand>
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
-                    <Nav className="ml-auto" navbar>
-                        <NavItem >
-                            <NavbarText>Component 1</NavbarText>
+                    <Nav className='navv me-auto' navbar>
+                        <NavItem>
+                            <NavLink href='#'>Home</NavLink>
                         </NavItem>
-                        <NavItem >
-                            <NavbarText>Component 2</NavbarText>
+                        <NavItem>
+                            <NavLink href='#'>About Us</NavLink>
                         </NavItem>
-                        <UncontrolledDropdown nav inNavbar className='col col-12 col-md-4'>
-                            <DropdownToggle nav caret right>
-                                Options
-                            </DropdownToggle>
-                            <DropdownMenu right>
-                                <DropdownItem>
-                                    Option 1
-                                </DropdownItem>
-                                <DropdownItem>
-                                    Option 2
-                                </DropdownItem>
-                                <DropdownItem divider />
-                                <DropdownItem>
-                                    Reset
-                                </DropdownItem>
-                            </DropdownMenu>
-                        </UncontrolledDropdown>
+                        <NavItem>
+                            <NavLink href='#'>Contact Us</NavLink>
+                        </NavItem>
+                        
                     </Nav>
+                    <NavbarText className='navit'>FeedBack</NavbarText>
                 </Collapse>
             </Navbar>
             </div>
             
             <div className='jumbotron'>
-            <Container fluid>
-                <h1 className="display-3">Fluid jumbotron</h1>
-                <p className="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
-            </Container>
+                <div className='container '>
+                    <div className='row mt-5'>
+                        <div className='col-12 col-md-6 offset-md-3'>
+                            <p className='logintext'>Welcome to Title</p>
+                        </div>
+                        <div className='row mt-5'>
+                            <div className='col-12 col-md-6 offset-md-3'>
+                                <p className='logintext1'> Success is not Final; <br /> 
+                                    Failure is not Fatal; <br/> It is the courage to continue; <br/> that count. <br/>
+                                </p>
+                            </div>
+                        </div>
+                        <div className='row gx-5 mt-10 mt-8'>
+                            <div className='col-12 col-md-4 offset-md-2'>
+                                <button className='btn btn-lg btn-outline-light w-100'>
+                                    Login
+                                </button>
+                            </div>
+                            <div className='col-12 col-md-4 '>
+                                <button className='btn btn-lg btn-outline-light btn-block w-100'>
+                                    SignUp
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     )

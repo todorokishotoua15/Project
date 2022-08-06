@@ -3,44 +3,96 @@ import React, { useState } from 'react';
 import {
     Collapse, Container, Navbar, NavLink, Nav, NavbarBrand, 
     NavbarToggler, NavItem, UncontrolledDropdown, DropdownToggle, 
-    DropdownMenu, DropdownItem, NavbarText, UncontrolledCarousel, Media} 
+    DropdownMenu, DropdownItem, NavbarText, UncontrolledCarousel, Media,
+    Modal, ModalFooter, Button, ModalHeader, ModalBody, Form, FormGroup, Input, Label} 
 from 'reactstrap'; 
 import One from './1.jpg';
 import Two from './2.jpg';
 import Three from './3.jpg';
 import Foot from './Footer';
+import Navb from './Navbar';
 function Login() {
     
-    const [isOpen, setisOpen] = useState(false);
+    const [isModelOpen, setModalOpen] = useState(false);
+    const [isModel2Open, setModal2Open] = useState(false);
+    const [username, setusername] = useState('');
+    const [password, setpassword] = useState('');
+    const [firstname, setfirstname] = useState('');
+    const [lastname, setlastname] = useState('');
 
-    function toggle() {
-        setisOpen(!isOpen);
+    function toggleModal() {
+        setModalOpen(!isModelOpen);
     }
+    
+    function toggleModal2() {
+        setModal2Open(!isModel2Open);
+    }
+
+    function login(event) {
+        console.log();
+        toggleModal();
+    }
+
+    function signup() {
+        console.log(firstname, lastname, username, password);
+        toggleModal2();
+    }
+
     console.log(One);
     return (
         <div>
-            <div>
-            <Navbar color='dark' dark expand="md" >
-                <NavbarBrand href='/'>Title</NavbarBrand>
-                <NavbarToggler onClick={toggle} />
-                <Collapse isOpen={isOpen} navbar>
-                    <Nav className='navv me-auto' navbar>
-                        <NavItem>
-                            <NavLink href='#'>Home</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink href='#'>About Us</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink href='#'>Contact Us</NavLink>
-                        </NavItem>
-                        
-                    </Nav>
-                    <NavbarText className='navit'>FeedBack</NavbarText>
-                </Collapse>
-            </Navbar>
-            </div>
-            
+            <Modal isOpen={isModelOpen} toggle={toggleModal} >
+                <ModalHeader toggle={toggleModal} charCode="Y">Login</ModalHeader>
+                <ModalBody>
+                    <Form>
+                        <FormGroup>
+                            <Label htmlFor="username">Username</Label>
+                            <Input type='text' id='username' name='username' innerRef={(input) => setusername(input)} />
+                        </FormGroup>
+                        <FormGroup>
+                        <Label htmlFor="password">Password</Label>
+                            <Input type='password' id='password' name='password' innerRef={(input) => setpassword(input)} />
+                        </FormGroup>
+                    </Form>
+                    
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="primary" type='submit' value="submit" onClick={login}>Submit</Button>{' '}
+                    <Button color="secondary" onClick={toggleModal}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
+            <Modal isOpen={isModel2Open} toggle={toggleModal2} >
+                <ModalHeader toggle={toggleModal2} charCode="Y">Sign Up</ModalHeader>
+                <ModalBody>
+                    <Form>
+                        <FormGroup>
+                            <Label htmlFor="firstname">First Name</Label>
+                            <Input type='text' id='firstname' name='firstname' innerRef={(input) => {
+                                console.log("her", input);
+                                setfirstname(input)
+                            }} />
+                        </FormGroup>
+                        <FormGroup>
+                        <Label htmlFor="lastname">Last Name</Label>
+                            <Input type='text' id='lastname' name='lastname' innerRef={(input) => setlastname(input)} />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label htmlFor="username">Username</Label>
+                            <Input type='text' id='username' name='username' innerRef={(input) => setusername(input)} />
+                        </FormGroup>
+                        <FormGroup>
+                        <Label htmlFor="password">Password</Label>
+                            <Input type='password' id='password' name='password' innerRef={(input) => setpassword(input)} />
+                        </FormGroup>
+                    </Form>
+                    
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="primary" onClick={signup}>Submit</Button>{' '}
+                    <Button color="secondary" onClick={toggleModal2}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
+            <Navb/>
             <div className='jumbotron'>
                 <div className='container '>
                     <div className='row mt-5'>
@@ -56,12 +108,12 @@ function Login() {
                         </div>
                         <div className='row gx-5 mt-10 mt-8'>
                             <div className='col-12 col-md-4 offset-md-2'>
-                                <button className='btn btn-lg btn-outline-light w-100'>
+                                <button className='btn btn-lg btn-outline-light w-100' onClick={toggleModal}>
                                     Login
                                 </button>
                             </div>
                             <div className='col-12 col-md-4 '>
-                                <button className='btn btn-lg btn-outline-light btn-block w-100'>
+                                <button className='btn btn-lg btn-outline-light btn-block w-100' onClick={toggleModal2}>
                                     SignUp
                                 </button>
                             </div>

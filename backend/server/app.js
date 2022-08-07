@@ -9,6 +9,7 @@ var passport = require('passport');
 var authenticate = require('./authenticate');
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
+var cors = require('cors');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -32,6 +33,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cors());
 
 // app.use(express.static(path.join(__dirname, 'public')));
 

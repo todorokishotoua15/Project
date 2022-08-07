@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import {
     Collapse, Container, Navbar, NavLink, Nav, NavbarBrand, 
     NavbarToggler, NavItem, UncontrolledDropdown, DropdownToggle, 
@@ -11,7 +11,9 @@ import Two from './2.jpg';
 import Three from './3.jpg';
 import Foot from './Footer';
 import Navb from './Navbar';
-function Login() {
+import { Navigate } from 'react-router-dom';
+
+function Login(props) {
     
     const [isModelOpen, setModalOpen] = useState(false);
     const [isModel2Open, setModal2Open] = useState(false);
@@ -19,8 +21,21 @@ function Login() {
     const [password, setpassword] = useState('');
     const [firstname, setfirstname] = useState('');
     const [lastname, setlastname] = useState('');
+    const [redirect, setredirect] = useState(false);
 
-    function toggleModal() {
+    useEffect(() => {
+        console.log(localStorage.getItem('token'));
+        if (localStorage.getItem('token') === null) {
+            setredirect(false);
+        }
+        else {
+            setredirect(true);
+            props.setuser(localStorage.getItem('username'));
+            
+        }
+    })
+
+    function toggleModal(props) {
         setModalOpen(!isModelOpen);
     }
     
@@ -29,18 +44,57 @@ function Login() {
     }
 
     function login(event) {
-        console.log();
+        console.log(username.value, password.value);
+        const requesoption = {
+            method: 'POST',
+            header: { 'Content-Type': 'text/plain'},
+            body: JSON.stringify({
+                "username": username.value,
+                "password": password.value
+            })
+        };
+        axios.post('http://localhost:3001/users/login', {
+            username: username.value,
+            password: password.value
+          })
+          .then(function (response) {
+            console.log("token: ", response.data.token)
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('username', username.value);
+            setredirect(true);
+          })
+          .catch(function (error) {
+            alert("Invalid Credentials!");
+            console.log(error);
+            setredirect(false);
+          });
         toggleModal();
+        
+        
     }
 
     function signup() {
         console.log(firstname, lastname, username, password);
         toggleModal2();
+        axios.post('http://localhost:3001/users/signup', {
+            username: username.value,
+            password: password.value,
+            firstname: firstname.value,
+            lastname: lastname.value
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
     }
 
-    console.log(One);
+   
+    
     return (
         <div>
+            {redirect ? <Navigate to="/dashboard"></Navigate> : null}
             <Modal isOpen={isModelOpen} toggle={toggleModal} >
                 <ModalHeader toggle={toggleModal} charCode="Y">Login</ModalHeader>
                 <ModalBody>
@@ -68,7 +122,7 @@ function Login() {
                         <FormGroup>
                             <Label htmlFor="firstname">First Name</Label>
                             <Input type='text' id='firstname' name='firstname' innerRef={(input) => {
-                                console.log("her", input);
+                                
                                 setfirstname(input)
                             }} />
                         </FormGroup>

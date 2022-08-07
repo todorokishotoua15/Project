@@ -6,6 +6,11 @@ User = require('../models/user');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
+  console.log(req.body);
+  res.send('respond with a resource');
+});
+router.post('/', function(req, res, next) {
+  console.log(req.body);
   res.send('respond with a resource');
 });
 
@@ -28,6 +33,7 @@ router.post('/signup', (req,res,next) => {
 })
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
+    console.log(req);
     var token = authenticate.getToken({_id: req.user._id});
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');

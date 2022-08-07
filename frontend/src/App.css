@@ -193,6 +193,10 @@
   width: 150px;
 }
 
+.mt-7 {
+  margin-top: 6rem;
+}
+
 .mt-8 {
   margin-top: 7rem;
 }
@@ -213,6 +217,19 @@
   .i4 {
     height: 225px;
   }
+  .tt1 {
+    padding-left: 50px;
+    margin-left: 50px;
+    
+  }
+  .bb1 {
+    height: 100px;
+  }
+}
+@media (min-width:1025px) {
+    .bb1 {
+      height: 100%;
+    }
 }
 
 .h1t1 {
@@ -255,4 +272,13 @@
 
 .a1 {
   text-decoration: none;
+}
+
+
+
+.row-content1 {
+  margin:0px auto;
+  padding: 30px 0px 50px 0px;
+  border-bottom: 2px ridge;
+  min-height:100px;
 }

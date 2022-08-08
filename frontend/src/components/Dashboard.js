@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
+import { Table } from 'reactstrap';
 import Navb2 from "./Navbar2";
 import Foot from "./Footer";
 import CanvasJSReact from '../canvasjs.react';
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart
+
+
 function Dashboard(props) {
 
     const[solved, setsolved] = useState([])
     const[loaded, setloaded] = useState(false);
     const[err, seterr] = useState(null);
     const[solvedTags, setsolvedTags] = useState([]);
-
+    const[pendproblems, setpendproblems] = useState([]);
+    const [ploaded, setploaded] = useState(false);
+    
     useEffect(() => {
         if (solvedTags.length === 0) {
             fetch("https://codeforces.com/api/user.status?handle=" + localStorage.getItem('username') +"&verdict=OK")
@@ -55,6 +60,28 @@ function Dashboard(props) {
         
     })
 
+    useEffect(() => {
+        if (!ploaded) {
+            fetch("http://localhost:3001/problems", {
+                method: 'get',
+                headers: new Headers({
+                    "authorization": "Bearer " + localStorage.getItem('token'),
+                    "username": localStorage.getItem('username')
+                })
+            }).then(res => res.json())
+            .then(
+                (res) => {
+                    console.log("gg ", res);
+                    setpendproblems(res);
+                    setploaded(true);
+                },
+                (err) => {
+                    console.log("no gg :( ", err);
+                }
+            )
+        }
+    })
+
     const[redir, setredir] = useState(false);
     const options = {
         exportEnabled: true,
@@ -71,6 +98,49 @@ function Dashboard(props) {
             dataPoints: solvedTags
         }]
     }
+
+    function RenderProblems() {
+        var count = 1;
+        if (pendproblems.length === 0) {
+            return (
+                <div className="col d-flex justify-content-center">
+                    <h3 className="h1t1 h1t2 h1t3">
+                        Looks Like you don't have any pending problems! Click on Practice Problems or 
+                        Practice Weak Concept to get started!
+                    </h3>
+                </div>
+            )
+        }
+        else {
+            const items = pendproblems.map((prob) => {
+                return (
+                    <tr>
+                        <th>{count++}</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>{prob}</th>
+                    </tr>
+                )
+            })
+            return (
+                <Table responsive hover bordered>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Table Heading</th>
+                            <th>Table Heading</th>
+                            <th>Table Heading</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {items}
+                    </tbody>
+                </Table>
+            )
+        }
+    }
+
+    
     return (
         <div >
             <Navb2 redir={redir} setredir={setredir}/>
@@ -83,13 +153,13 @@ function Dashboard(props) {
                     </div>
                 </div>
                 <div className="row mt-5 mb-5 gx-5 align-items-center tt1">
-                    <button className="btn btn-primary btn-lg col-6 offset-3 offset-md-0 col-md-3 bb1">
+                    <button className="btn btn-dark btn-lg col-6 offset-3 offset-md-0 col-md-3 bb1">
                         Practice!
                     </button>
-                    <button className="btn btn-primary btn-lg col-6 offset-3 offset-md-0 mt-3 mt-md-0 col-md-3 offset-md-1 bb1">
+                    <button className="btn btn-dark btn-lg col-6 offset-3 offset-md-0 mt-3 mt-md-0 col-md-3 offset-md-1 bb1">
                         Create Contest!
                     </button>
-                    <button className="btn btn-primary btn-lg col-6 offset-3 offset-md-0 mt-3 mt-md-0 col-md-3 offset-md-1 bb1">
+                    <button className="btn btn-dark btn-lg col-6 offset-3 offset-md-0 mt-3 mt-md-0 col-md-3 offset-md-1 bb1">
                         Practice Weak concept!
                     </button>
                 </div>
@@ -103,6 +173,16 @@ function Dashboard(props) {
 			            />
                     </div>
                 </row>
+                <div className="row mt-5">
+                    <div className="col d-flex justify-content-center">
+                        <h3 className="h1t1 h1t2 h1t3">
+                            Pending Problems :
+                        </h3>
+                    </div>
+                </div>
+                <div className="row mt-5">
+                    <RenderProblems />
+                </div>
             </div>
             <Foot />
         </div>

@@ -96,7 +96,7 @@ function Login(props) {
         <div>
             {redirect ? <Navigate to="/dashboard"></Navigate> : null}
             <Modal isOpen={isModelOpen} toggle={toggleModal} >
-                <ModalHeader toggle={toggleModal} charCode="Y">Login</ModalHeader>
+                <ModalHeader toggle={toggleModal} charCode="Y" className='modhead'>Login</ModalHeader>
                 <ModalBody>
                     <Form>
                         <FormGroup>

@@ -7,6 +7,18 @@ const User = new Schema({
         type: Boolean,
         default: false
     },
+    problems: {
+        type: Array,
+        default: []
+    },
+    firstname: {
+        type: String,
+        required : true
+    },
+    lastname: {
+        type: String,
+        required: true
+    }
 });
 
 User.plugin(passportLocalMongoose);

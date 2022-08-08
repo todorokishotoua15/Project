@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Table } from 'reactstrap';
+import { Table, Button, Modal, ModalBody, ModalFooter, Input, Label,
+         Form, FormGroup, ModalHeader } from 'reactstrap';
 import Navb2 from "./Navbar2";
 import Foot from "./Footer";
 import CanvasJSReact from '../canvasjs.react';
+import { useNavigate } from "react-router";
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart
 
@@ -15,6 +17,7 @@ function Dashboard(props) {
     const[solvedTags, setsolvedTags] = useState([]);
     const[pendproblems, setpendproblems] = useState([]);
     const [ploaded, setploaded] = useState(false);
+    
     
     useEffect(() => {
         if (solvedTags.length === 0) {
@@ -141,8 +144,16 @@ function Dashboard(props) {
     }
 
     
+
+    let navigate = useNavigate();
+    const routeChange = () => {
+        let path = '/practice_problem';
+        navigate(path);
+    }
+
     return (
         <div >
+            
             <Navb2 redir={redir} setredir={setredir}/>
             <div className="container">
                 <div className="row d-flex justify-content-center row-content1">
@@ -153,7 +164,7 @@ function Dashboard(props) {
                     </div>
                 </div>
                 <div className="row mt-5 mb-5 gx-5 align-items-center tt1">
-                    <button className="btn btn-dark btn-lg col-6 offset-3 offset-md-0 col-md-3 bb1">
+                    <button className="btn btn-dark btn-lg col-6 offset-3 offset-md-0 col-md-3 bb1" onClick={routeChange}>
                         Practice!
                     </button>
                     <button className="btn btn-dark btn-lg col-6 offset-3 offset-md-0 mt-3 mt-md-0 col-md-3 offset-md-1 bb1">

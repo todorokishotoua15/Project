@@ -1,22 +1,49 @@
 import React, { useEffect, useState } from "react";
 import { Table, Button, Modal, ModalBody, ModalFooter, Input, Label,
     Form, FormGroup, ModalHeader } from 'reactstrap';
+import axios from 'axios';
 import Navb2 from "./Navbar2";
 import Foot from "./Footer";
 
 function PracticeProblems(props) {
-    const [rating, setrating] = useState(-1);
+    const [rtg, setrating] = useState(-1);
     const [isModel1Open, setisModel1Open] = useState(false);
     const [numprob, setnumprob] = useState(0);
     const [warmprob, setwarmprob] = useState(0);
-    const[redir, setredir] = useState(false);
+    const [redir, setredir] = useState(false);
+    const [problist, setproblist] = useState([]);
+    const [load, setload] = useState(0);
+    const [allprob, setallprob] = useState([]);
+    const [solvedprob, setsolvedprob] = useState([]);
 
     useEffect(() => {
-        if (rating === -1) {
+        if (solvedprob.length === 0) {
+            fetch("https://codeforces.com/api/user.status?handle=" + localStorage.getItem('username') + "&verdict=OK")
+            .then((res) => res.json())
+            .then(
+                (res) => {
+                    var temp = [];
+                    for (var i = 0; i < res.result.length; i++) {
+                        if (res.result[i].verdict !== "OK") continue;
+                        var name = res.result[i].problem.name;
+                        var contest = res.result[i].problem.contestId;
+                        var obj = {
+                            "name" : name,
+                            "contest" : contest
+                        }
+                        temp.push(obj)
+                    }
+                    setsolvedprob(temp);
+                    console.log("temp", temp);
+                }
+            )
+        }
+        if (rtg === -1) {
             fetch("https://codeforces.com/api/user.info?handles=" + localStorage.getItem('username'))
             .then((res) => res.json())
             .then(
                 (res) => {
+                    console.log("rating : ", res.result[0].rating);
                     setrating(res.result[0].rating);
                 },
                 (err) => {
@@ -32,7 +59,105 @@ function PracticeProblems(props) {
 
     function handleClick() {
         setisModel1Open(!isModel1Open);
-        console.log(warmprob.value, numprob.value);
+        setload(1);
+        fetch("https://codeforces.com/api/problemset.problems")
+        .then((res) => res.json())
+        .then (
+            (res) => {
+                var temp = [];
+                for (var i = 0; i < res.result.problems.length; i++) {
+                    var curr = res.result.problems[i];
+                    var name = curr.name;
+                    var rating = curr.rating;
+                    var index = curr.index;
+                    var contest = curr.contestId;
+
+                    var obj = {
+                        "name" : name,
+                        "rating" : rating,
+                        "index" : index,
+                        "contest" : contest
+                    }
+                    
+                    temp.push(obj);
+                }
+                console.log("temp", temp)
+                setallprob(temp);
+                var currR = (Math.round(rtg/100))*100;
+                console.log(rtg, currR);
+                var delta = 100;
+                var temp1 = [];
+                for (var i = 0; i < temp.length; i++) {
+                    console.log(temp1.length, Number(numprob.value));
+                    if (temp1.length === Number(numprob.value)) {
+                        break;
+                    }
+                    var curr = temp[i];
+                    var found = false;
+                    for (var j = 0; j < solvedprob.length; j++) {
+                        if (curr.name === solvedprob[j].name && curr.contest === solvedprob[j].contest) {
+                            found = true;
+                        }
+                    }
+                    if (!found && curr.rating === currR) {
+                        
+                        if (currR - rtg < 400) currR += delta;
+                        temp1.push(curr);
+                    }
+                }
+                setproblist(temp1);
+                console.log("temp1", temp1)
+                console.log("allprob", allprob)
+                console.log("res", res);
+                setload(2);
+            }
+        )
+    }
+
+    function RenderQuestions() {
+        if (load === 0) {
+            return (
+                null
+            )
+        }
+        if (load === 1) {
+            return (               
+                <div className="col text-center">
+                    <h5 className="h1t1 h1t2 h1t3">Loading ...</h5>
+                </div>
+            )
+        }
+        else {
+            var count = 1;
+            const items = problist.map((prob) => {
+                var lnk = "https://codeforces.com/problemset/problem/" + prob.contest + "/" + prob.index
+                return (
+                    <tr>
+                        <th>{count++}</th>
+                        <th>{prob.index}</th>
+                        <th>{prob.rating}</th>
+                        <th>{prob.name}</th>
+                        <th><a href={lnk} className="a1 h1t1 a2"> Go to Problem </a></th>
+                    </tr>
+                )
+            })
+            return (
+                <Table responsive hover bordered>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Index</th>
+                            <th>Problem Rating</th>
+                            <th>Problem Name</th>
+                            <th>Problem Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {items}
+                    </tbody>
+                </Table>
+            )
+        }
     }
 
     return (
@@ -56,6 +181,7 @@ function PracticeProblems(props) {
                         <FormGroup>
                             <Label htmlFor="select">Select Number of Warmup Questions</Label>
                             <Input type="select" name="select" id="select" innerRef={(inp) => setwarmprob(inp)}>
+                                <option>0</option>
                                 <option>1</option>
                                 <option>2</option>
                             </Input>
@@ -91,6 +217,9 @@ function PracticeProblems(props) {
                             Generate!
                         </button>
                     </div>
+                </div>
+                <div className="row mt-5">
+                    <RenderQuestions/>
                 </div>
             </div>
             <Foot/>

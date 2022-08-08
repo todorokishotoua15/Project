@@ -44,4 +44,15 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
     res.json({success: true, token: token, status: 'You are successfully logged in!'});
 });
 
+router.post('/updateproblem', passport.authenticate('local'), (req,res) => {
+    var problemlist = req.body.problems;
+    User.findOne({username: req.body.username})
+    .then((user) => {
+        var temp = user.problems;
+        temp.concat(problemlist);
+        user.problems = temp;
+        user.save();
+    }).catch((err) => console.log(err));
+})
+
 module.exports = router;

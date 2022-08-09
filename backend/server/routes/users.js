@@ -6,8 +6,13 @@ User = require('../models/user');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  console.log(req.body);
-  res.send('respond with a resource');
+  User.find({})
+  .then((users) => {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      console.log(users);
+      res.json(users);
+  })
 });
 router.post('/', function(req, res, next) {
   console.log(req.body);

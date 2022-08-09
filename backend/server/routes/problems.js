@@ -17,7 +17,6 @@ problemrouter.route('/')
     User.findOne({username: username}).then((user) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        console.log(user);
         res.json(user.problems);
     }, (err) => next(err))
     .catch((err) => {
@@ -31,22 +30,23 @@ problemrouter.route('/upd')
     .then((user) => {
         
         var temp = user.problems;
+        console.log("problemssss :", req.body.problems)
         for (var i = 0; i < req.body.problems.length; i++) {
             var found = false;
             var curr = req.body.problems[i];
-            for (var j = 0; j < temp; j++) {
-                if (temp[j].rating === curr.rating && temp[j].name === curr.name && temp[j].contest === curr.contest){
+            for (var j = 0; j < temp.length; j++) {
+                if (JSON.stringify(temp[j]) === JSON.stringify(curr)){
                     found = true;
                 }
             }
+            console.log(found);
             if (!found) temp.push(req.body.problems[i]);
         }
         user.problems = temp;
-        console.log(temp);
+
         user.save().then((user) => {
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
-            console.log(user.problems);
             res.send(user);
         })
     })

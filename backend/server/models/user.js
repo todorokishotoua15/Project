@@ -18,6 +18,10 @@ const User = new Schema({
     lastname: {
         type: String,
         required: true
+    },
+    rating : {
+        type: Number,
+        required: true
     }
 });
 

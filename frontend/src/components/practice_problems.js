@@ -123,8 +123,8 @@ function PracticeProblems(props) {
     function handleClick() {
         setisModel1Open(!isModel1Open);
         console.log(pendprob);
-        if (warmprob+numprob+pendprob >= 50) {
-            alert('Limit of 50 reached! Please solve the pending problems first from the' +
+        if (warmprob.value+numprob.value+pendprob >= 50) {
+            alert('Limit of 50 reached! Please solve the pending problems first from the ' +
             'dashboard!');
             return;
         }

@@ -5,6 +5,16 @@ import axios from 'axios';
 import Navb2 from "./Navbar2";
 import Foot from "./Footer";
 
+/* Randomize array in-place using Durstenfeld shuffle algorithm */
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
+
 function PracticeProblems(props) {
     const [rtg, setrating] = useState(-1);
     const [isModel1Open, setisModel1Open] = useState(false);
@@ -15,6 +25,27 @@ function PracticeProblems(props) {
     const [load, setload] = useState(0);
     const [allprob, setallprob] = useState([]);
     const [solvedprob, setsolvedprob] = useState([]);
+    const [pendprob, setpendproblems] = useState(0);
+    const[solved, setsolved] = useState([]);
+
+    useEffect(() => {
+        if (solved.length === 0) {
+            fetch("https://codeforces.com/api/user.status?handle=" + localStorage.getItem('username') +"&verdict=OK")
+            .then((res) => res.json())
+            .then(
+                
+                (res) => {
+                    console.log(res);
+                    console.log(res.result);
+                    setsolved(res.result);
+                   
+                },
+                (err) => {
+                    console.log(err);
+                }
+            )
+        }
+    })
 
     useEffect(() => {
         if (solvedprob.length === 0) {
@@ -51,6 +82,38 @@ function PracticeProblems(props) {
                 }
             )
         }
+        fetch("http://localhost:3001/problems/", {
+            method : 'get',
+            headers: new Headers({
+                Authorization: "Bearer " + localStorage.getItem('token'),
+                username: localStorage.getItem('username')
+            }),
+            
+        })
+        .then((res) => res.json())
+        .then(
+            (res) => {
+                var temp2 = [];
+                var pprob = res;
+                for (var i = 0; i < pprob.length; i++) {
+                    var curr1 = pprob[i];
+                    var found = false;
+                    for (var j = 0; j < solved.length; j++) {
+                        var currsol = solved[j].problem;
+                        if (currsol.name === curr1.name && currsol.contest === curr1.contest) {
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        temp2.push(curr1);
+                    }
+                }
+                setpendproblems(temp2.length)
+            },
+            (err) => {
+                console.log(err);
+            }
+        )
     })
 
     function toggleModal1() {
@@ -59,11 +122,18 @@ function PracticeProblems(props) {
 
     function handleClick() {
         setisModel1Open(!isModel1Open);
+        console.log(pendprob);
+        if (warmprob+numprob+pendprob >= 50) {
+            alert('Limit of 50 reached! Please solve the pending problems first from the' +
+            'dashboard!');
+            return;
+        }
         setload(1);
         fetch("https://codeforces.com/api/problemset.problems")
         .then((res) => res.json())
         .then (
             (res) => {
+                console.log("hiiiii");
                 var temp = [];
                 for (var i = 0; i < res.result.problems.length; i++) {
                     var curr = res.result.problems[i];
@@ -87,6 +157,23 @@ function PracticeProblems(props) {
                 console.log(rtg, currR);
                 var delta = 100;
                 var temp1 = [];
+                shuffleArray(temp);
+                for (var i = 0; i < temp.length; i++) {
+                    if (temp1.length === Number(warmprob.value)) {
+                        break;
+                    }
+                    var curr = temp[i];
+                    var found = false;
+                    for (var j = 0; j < solvedprob.length; j++) {
+                        if (curr.name === solvedprob[j].name && curr.contest === solvedprob[j].contest) {
+                            found = true;
+                        }
+                    }
+                    if (!found && curr.rating === 800) {                        
+                        temp1.push(curr);
+                    }
+                }
+                console.log("temp11", temp1);
                 for (var i = 0; i < temp.length; i++) {
                     console.log(temp1.length, Number(numprob.value));
                     if (temp1.length === Number(numprob.value)) {
@@ -110,8 +197,20 @@ function PracticeProblems(props) {
                 console.log("allprob", allprob)
                 console.log("res", res);
                 setload(2);
+                axios.post('http://localhost:3001/problems/upd', {
+                    username: localStorage.getItem('username'),
+                    problems: temp1
+                }).then((res) => {
+                    console.log(res);
+                }).catch((err) => {
+                    console.log(err);
+                })
+            },
+            (err) => {
+                console.log(err);
             }
         )
+        
     }
 
     function RenderQuestions() {
@@ -121,11 +220,18 @@ function PracticeProblems(props) {
             )
         }
         if (load === 1) {
-            return (               
-                <div className="col text-center">
-                    <h5 className="h1t1 h1t2 h1t3">Loading ...</h5>
-                </div>
-            )
+            return (    
+                <div>
+                    <div className="col text-center">
+                        <h5 className="h1t1 h1t2 h1t3">Loading ...</h5>
+                    </div>
+                    <div className="col d-flex justify-content-center">
+                        <p className="h1t1 h1t2 h1t3">This may take upto 2 min depending on how busy
+                        codeforces server is 
+                        </p>
+                    </div>
+                </div>           
+        )
         }
         else {
             var count = 1;
@@ -137,7 +243,7 @@ function PracticeProblems(props) {
                         <th>{prob.index}</th>
                         <th>{prob.rating}</th>
                         <th>{prob.name}</th>
-                        <th><a href={lnk} className="a1 h1t1 a2"> Go to Problem </a></th>
+                        <th><a href={lnk} className=" h1t1 a2"> Go to Problem </a></th>
                     </tr>
                 )
             })
@@ -159,7 +265,20 @@ function PracticeProblems(props) {
             )
         }
     }
-
+    if (rtg === -1 || solvedprob.length === 0) {
+        return (
+            <div>
+                <Navb2 redir={redir} setredir={setredir}/>
+                <div className="row mt-9 mb-10">
+                    <h1 className="h1t1 h1t2 h1t3">
+                        Loading...
+                    </h1>
+                </div>
+                
+                <Foot/>
+            </div>
+        )
+    }
     return (
         <div>
             <Navb2 redir={redir} setredir={setredir}/>
@@ -201,7 +320,7 @@ function PracticeProblems(props) {
                         </h3>
                     </div>
                 </div>
-                <div className="row mt-2 row-content1">
+                <div className="row mt-3 row-content1">
                     <div className="col d-flex justify-content-center">
                         <p className="h1t1 h1t2 h1t3"> Based on your rating, random problems will
                             be generated. The question's rating will start around your own rating and 

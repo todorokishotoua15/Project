@@ -225,6 +225,9 @@
   .bb1 {
     height: 100px;
   }
+  .w-50 {
+    width: 75%;
+  }
 }
 @media (min-width:1025px) {
     .bb1 {
@@ -285,4 +288,22 @@
 
 .a2 {
   color: black;
+}
+
+.mb-6 {
+  margin-bottom: 8rem;
+}
+
+.mb-10 {
+  margin-bottom: 12rem;
+  margin-top: 15rem;
+  padding-top: 3rem;
+}
+
+.mt-9 {
+  margin-top: 9rem;
+}
+
+.bbb1 {
+  margin-right: 20px;
 }

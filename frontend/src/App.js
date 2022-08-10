@@ -5,6 +5,8 @@ import Home from './components/Home';
 import Login from './components/login';
 import Dashboard from './components/Dashboard';
 import PracticeProblems from './components/practice_problems';
+import CreateContest from './components/createcontest';
+import PracticeWeakConcept from './components/PracticeWeakConcept';
 
 function App() {
   const [token, settoken] = useState('');
@@ -23,6 +25,8 @@ function App() {
             <Route path="/home" element={<Home/>}></Route>
             <Route path='/dashboard' element={<Dashboard username={username} />}></Route>
             <Route path='/practice_problem' element={<PracticeProblems />}></Route>
+            <Route path='/createcontest' element={<CreateContest />}></Route>
+            <Route path='/practice_weak_concept' element={<PracticeWeakConcept />}></Route>
         </Routes>
     </BrowserRouter>
     </div>

@@ -11,7 +11,7 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart
 
 function Dashboard(props) {
 
-    const[solved, setsolved] = useState([])
+    const[solved, setsolved] = useState([]);
     const[loaded, setloaded] = useState(false);
     const[err, seterr] = useState(null);
     const[solvedTags, setsolvedTags] = useState([]);
@@ -60,7 +60,23 @@ function Dashboard(props) {
                 }
             )
         }
-        
+        fetch("http://localhost:3001/problems/", {
+            method : 'get',
+            headers: new Headers({
+                Authorization: "Bearer " + localStorage.getItem('token'),
+                username: localStorage.getItem('username')
+            }),
+            
+        })
+        .then((res) => res.json())
+        .then(
+            (res) => {
+                setpendproblems(res);
+            },
+            (err) => {
+                console.log(err);
+            }
+        )
     })
 
     useEffect(() => {
@@ -115,13 +131,29 @@ function Dashboard(props) {
             )
         }
         else {
-            const items = pendproblems.map((prob) => {
+            var temp2 = [];
+            for (var i = 0; i < pendproblems.length; i++) {
+                var curr1 = pendproblems[i];
+                var found = false;
+                for (var j = 0; j < solved.length; j++) {
+                    var currsol = solved[j].problem;
+                    if (currsol.name === curr1.name && currsol.contest === curr1.contest) {
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    temp2.push(curr1);
+                }
+            }
+            const items = temp2.map((prob) => {
+                var lnk = "https://codeforces.com/problemset/problem/" + prob.contest + "/" + prob.index
                 return (
                     <tr>
                         <th>{count++}</th>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>{prob}</th>
+                        <th>{prob.index}</th>
+                        <th>{prob.rating}</th>
+                        <th>{prob.name}</th>
+                        <th><a href={lnk} className=" h1t1 a2"> Go to Problem </a></th>
                     </tr>
                 )
             })
@@ -130,9 +162,10 @@ function Dashboard(props) {
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Table Heading</th>
-                            <th>Table Heading</th>
-                            <th>Table Heading</th>
+                            <th>Index</th>
+                            <th>Problem Rating</th>
+                            <th>Problem Name</th>
+                            <th>Problem Link</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -148,6 +181,16 @@ function Dashboard(props) {
     let navigate = useNavigate();
     const routeChange = () => {
         let path = '/practice_problem';
+        navigate(path);
+    }
+
+    const routeChange2 = () => {
+        let path = '/createcontest';
+        navigate(path);
+    }
+
+    const routeChange3 = () => {
+        let path = '/practice_weak_concept'
         navigate(path);
     }
 
@@ -167,10 +210,10 @@ function Dashboard(props) {
                     <button className="btn btn-dark btn-lg col-6 offset-3 offset-md-0 col-md-3 bb1" onClick={routeChange}>
                         Practice!
                     </button>
-                    <button className="btn btn-dark btn-lg col-6 offset-3 offset-md-0 mt-3 mt-md-0 col-md-3 offset-md-1 bb1">
+                    <button className="btn btn-dark btn-lg col-6 offset-3 offset-md-0 mt-3 mt-md-0 col-md-3 offset-md-1 bb1" onClick={routeChange2}>
                         Create Contest!
                     </button>
-                    <button className="btn btn-dark btn-lg col-6 offset-3 offset-md-0 mt-3 mt-md-0 col-md-3 offset-md-1 bb1">
+                    <button className="btn btn-dark btn-lg col-6 offset-3 offset-md-0 mt-3 mt-md-0 col-md-3 offset-md-1 bb1" onClick={routeChange3}>
                         Practice Weak concept!
                     </button>
                 </div>

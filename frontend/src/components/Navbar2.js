@@ -29,6 +29,9 @@ function Navb2(props) {
             <Collapse isOpen={isOpen} navbar>
                 <Nav className='navv me-auto' navbar>
                     <NavItem>
+                        <NavLink href='/dashboard'>Dashboard</NavLink>
+                    </NavItem>
+                    <NavItem>
                         <NavLink href='#'>Home</NavLink>
                     </NavItem>
                     <NavItem>

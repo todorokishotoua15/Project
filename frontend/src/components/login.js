@@ -230,13 +230,13 @@ function Login(props) {
                     <div className='col-7'>
                         <div className='container'>
                             <div className='row'>
-                                <h2 className='h1t2 h1t3'>Problems aimed to improve You!</h2>
+                                <h2 className='h1t2 h1t3'>Practice Weak Concept!</h2>
                             </div>
                             <div className='row'>
                                 <div className='d-none d-md-block'>
-                                    <p className='h1t1 mt-3 h1t3'> We try to collect questions from codeforces that will be 
-                                        best suited for your improvement. For this, lets say if your rating is 'x' 
-                                        then questions are collected ranging from x-200 to upto x+400.
+                                    <p className='h1t1 mt-3 h1t3'> Practice your weak area! We provide option to generate 
+                                    questions in the area you are weak in. Based on your failed submissions, questions are 
+                                    from the area having maximum failed submission to area having minimum.
                                     </p>
                                 </div>
                             </div>

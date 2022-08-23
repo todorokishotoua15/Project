@@ -15,22 +15,20 @@ function Navb() {
     return (
         <div>
         <Navbar color='dark' dark expand="md" >
-            <NavbarBrand href='/'>Title</NavbarBrand>
+            <NavbarBrand href='/'>CodeCase</NavbarBrand>
             <NavbarToggler onClick={toggle} />
             <Collapse isOpen={isOpen} navbar>
                 <Nav className='navv me-auto' navbar>
                     <NavItem>
-                        <NavLink href='#'>Home</NavLink>
+                        <NavLink href='/'>Home</NavLink>
                     </NavItem>
+
                     <NavItem>
-                        <NavLink href='#'>About Us</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink href='#'>Contact Us</NavLink>
+                        <NavLink href='/contactus'>Contact Us</NavLink>
                     </NavItem>
                     
                 </Nav>
-                <NavbarText className='navit'>FeedBack</NavbarText>
+
             </Collapse>
         </Navbar>
     </div>

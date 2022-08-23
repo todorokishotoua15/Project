@@ -123,12 +123,21 @@
   padding-left: 15px;
   padding-right: 15px;
 }
+.container-fluid .jumbotron2, .container .jumbotron2 {
+  border-radius: 6px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
 
 @media screen and (min-width: 768px)
 {
 .container-fluid .jumbotron, .container .jumbotron {
     padding-left: 60px;
     padding-right: 60px;
+}
+.container-fluid .jumbotron2, .container .jumbotron2 {
+  padding-left: 60px;
+  padding-right: 60px;
 }
 }
 
@@ -137,6 +146,10 @@
 .jumbotron {
     padding-bottom: 48px;
     padding-top: 48px;
+}
+.jumbotron2 {
+  padding-bottom: 48px;
+  padding-top: 48px;
 }
 }
 
@@ -159,6 +172,24 @@
   height: 665px;
 }
 
+.jumbotron2 {
+  background-color: #000000;
+  background: url("../public/images/cu3.jpg") no-repeat center center; 
+  
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-size: 100% 100%;
+  padding-left: 60px;
+  padding-right: 60px;
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  padding-top: 30px;
+  width: 100%;
+  object-fit: cover;
+  height: 665px;
+}
 .navv {
   margin-left: 20px;
 }

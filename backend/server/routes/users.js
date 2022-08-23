@@ -23,7 +23,8 @@ router.post('/signup', (req,res,next) => {
     User.register(new User({
       username: req.body.username, 
       firstname: req.body.firstname,
-      lastname: req.body.lastname
+      lastname: req.body.lastname,
+      rating : req.body.rating
       }), req.body.password,
         (err, user) => {
           if(err) {
@@ -44,10 +45,33 @@ router.post('/signup', (req,res,next) => {
 router.post('/login', passport.authenticate('local'), (req, res) => {
     console.log(req);
     var token = authenticate.getToken({_id: req.user._id});
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.json({success: true, token: token, status: 'You are successfully logged in!'});
+    User.findOne({usernmae : req.body.username})
+    .then ((user) => {
+      user.rating = req.body.rating;
+      user.save().then((resp) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json({success: true, token: token, status: 'You are successfully logged in!'});
+      }, (err) => {
+        console.log(err);
+      })
+    })
+    
 });
+
+router.post('/updrating', (req, res) => {
+    User.findOne({username:req.body.username})
+    .then((user) => {
+      user.rating = req.body.rating;
+      user.save().then((resp) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(user);
+      }, (err) => {
+        console.log(err);
+      })
+    })
+})
 
 
 module.exports = router;

@@ -24,7 +24,6 @@ function Login(props) {
     const [redirect, setredirect] = useState(false);
 
     useEffect(() => {
-        console.log(localStorage.getItem('token'));
         if (localStorage.getItem('token') === null) {
             setredirect(false);
         }
@@ -44,50 +43,93 @@ function Login(props) {
     }
 
     function login(event) {
-        console.log(username.value, password.value);
-        const requesoption = {
-            method: 'POST',
-            header: { 'Content-Type': 'text/plain'},
-            body: JSON.stringify({
-                "username": username.value,
-                "password": password.value
+        var rating = -1;
+        fetch("https://codeforces.com/api/user.info?handles=" + username.value)
+        .then((res) => res.json())
+        .then((res) => {
+            var result = res.result[0];
+            rating = result.rating;
+            console.log(rating);
+            axios.post("http://localhost:3001/users/updrating", {
+                username : username.value,
+                rating: rating
             })
-        };
-        axios.post('http://localhost:3001/users/login', {
-            username: username.value,
-            password: password.value
-          })
-          .then(function (response) {
-            console.log("token: ", response.data.token)
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('username', username.value);
-            setredirect(true);
-          })
-          .catch(function (error) {
-            alert("Invalid Credentials!");
-            console.log(error);
-            setredirect(false);
-          });
+            .then(
+                (res) => {
+                    console.log(res);
+                    axios.post('http://localhost:3001/users/login', {
+                        username: username.value,
+                        password: password.value,
+                        rating: rating
+                    })
+                    .then(function (response) {
+                        localStorage.setItem('token', response.data.token);
+                        localStorage.setItem('username', username.value);
+                        setredirect(true);
+                    })
+                    .catch(function (error) {
+                        alert("Invalid Credentials!");
+                        console.log(error);
+                        setredirect(false);
+                    });
+                },
+                (err) => {
+                    console.log(err);
+                }
+            )
+            
+        }, (err) => {
+            axios.post('http://localhost:3001/users/login', {
+                username: username.value,
+                password: password.value,
+                rating : -1
+            })
+            .then(function (response) {
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('username', username.value);
+                setredirect(true);
+            })
+            .catch(function (error) {
+                alert("Invalid Credentials!");
+                console.log(error);
+                setredirect(false);
+            });
+            alert("Rating fetch failed, please try re-logging");
+        })
+        
+        
         toggleModal();
         
         
     }
 
     function signup() {
-        console.log(firstname, lastname, username, password);
         toggleModal2();
-        axios.post('http://localhost:3001/users/signup', {
-            username: username.value,
-            password: password.value,
-            firstname: firstname.value,
-            lastname: lastname.value
-          })
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        fetch("https://codeforces.com/api/user.info?handles=" + username.value)
+        .then((res) => res.json())
+        .then(
+            (res) => {
+                var result = res.result[0];
+                var rating = result.rating;
+                axios.post('http://localhost:3001/users/signup', {
+                    username: username.value,
+                    password: password.value,
+                    firstname: firstname.value,
+                    lastname: lastname.value
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            (err) => {
+                console.log(err);
+                alert('An error has occured, if it persists, please try again later');
+            }
+        )
+        
     }
 
    
@@ -131,7 +173,7 @@ function Login(props) {
                             <Input type='text' id='lastname' name='lastname' innerRef={(input) => setlastname(input)} />
                         </FormGroup>
                         <FormGroup>
-                            <Label htmlFor="username">Username</Label>
+                            <Label htmlFor="username">Username (Use your Codeforces username)</Label>
                             <Input type='text' id='username' name='username' innerRef={(input) => setusername(input)} />
                         </FormGroup>
                         <FormGroup>
@@ -151,7 +193,7 @@ function Login(props) {
                 <div className='container '>
                     <div className='row mt-5'>
                         <div className='col-12 col-md-6 offset-md-3'>
-                            <p className='logintext'>Welcome to Title</p>
+                            <p className='logintext'>Welcome to CodeCase</p>
                         </div>
                         <div className='row mt-5'>
                             <div className='col-12 col-md-6 offset-md-3'>

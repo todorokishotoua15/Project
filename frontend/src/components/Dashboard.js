@@ -137,7 +137,8 @@ function Dashboard(props) {
                 var found = false;
                 for (var j = 0; j < solved.length; j++) {
                     var currsol = solved[j].problem;
-                    if (currsol.name === curr1.name && currsol.contest === curr1.contest) {
+                    if (currsol.name === curr1.name && currsol.contestId === curr1.contest) {
+                        
                         found = true;
                     }
                 }

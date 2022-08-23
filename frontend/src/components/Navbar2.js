@@ -24,7 +24,7 @@ function Navb2(props) {
         <div>
             {props.redir ? <Navigate to="/"></Navigate> : null}
         <Navbar color='dark' dark expand="md" >
-            <NavbarBrand href='/'>Title</NavbarBrand>
+            <NavbarBrand href='/'>CodeCase</NavbarBrand>
             <NavbarToggler onClick={toggle} />
             <Collapse isOpen={isOpen} navbar>
                 <Nav className='navv me-auto' navbar>
@@ -32,17 +32,12 @@ function Navb2(props) {
                         <NavLink href='/dashboard'>Dashboard</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink href='#'>Home</NavLink>
+                        <NavLink href='/'>Home</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink href='#'>About Us</NavLink>
+                        <NavLink href='/contactus'>Contact Us</NavLink>
                     </NavItem>
-                    <NavItem>
-                        <NavLink href='#'>Contact Us</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink href='#'>Feedback</NavLink>
-                    </NavItem>
+
                 </Nav>
                 <NavItem>
                 <NavbarText className='navit'>

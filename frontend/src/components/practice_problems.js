@@ -35,7 +35,6 @@ function PracticeProblems(props) {
             .then(
                 
                 (res) => {
-                    console.log(res);
                     console.log(res.result);
                     setsolved(res.result);
                    
@@ -65,7 +64,6 @@ function PracticeProblems(props) {
                         temp.push(obj)
                     }
                     setsolvedprob(temp);
-                    console.log("temp", temp);
                 }
             )
         }
@@ -123,7 +121,8 @@ function PracticeProblems(props) {
     function handleClick() {
         setisModel1Open(!isModel1Open);
         console.log(pendprob);
-        if (warmprob.value+numprob.value+pendprob >= 50) {
+        if (Number(warmprob.value)+Number(numprob.value)+pendprob >= 50) {
+            console.log(Number(warmprob.value)+Number(numprob.value)+pendprob);
             alert('Limit of 50 reached! Please solve the pending problems first from the ' +
             'dashboard!');
             return;
@@ -151,13 +150,13 @@ function PracticeProblems(props) {
                     
                     temp.push(obj);
                 }
-                console.log("temp", temp)
                 setallprob(temp);
                 var currR = (Math.round(rtg/100))*100;
                 console.log(rtg, currR);
                 var delta = 100;
                 var temp1 = [];
                 shuffleArray(temp);
+                console.log(solvedprob);
                 for (var i = 0; i < temp.length; i++) {
                     if (temp1.length === Number(warmprob.value)) {
                         break;
@@ -174,6 +173,7 @@ function PracticeProblems(props) {
                     }
                 }
                 console.log("temp11", temp1);
+                console.log(solvedprob);
                 for (var i = 0; i < temp.length; i++) {
                     console.log(temp1.length, Number(numprob.value));
                     if (temp1.length === Number(numprob.value)) {

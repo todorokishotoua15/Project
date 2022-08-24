@@ -105,30 +105,18 @@ function Login(props) {
 
     function signup() {
         toggleModal2();
-        fetch("https://codeforces.com/api/user.info?handles=" + username.value)
-        .then((res) => res.json())
-        .then(
-            (res) => {
-                var result = res.result[0];
-                var rating = result.rating;
-                axios.post('http://localhost:3001/users/signup', {
-                    username: username.value,
-                    password: password.value,
-                    firstname: firstname.value,
-                    lastname: lastname.value
-                })
-                .then(function (response) {
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            (err) => {
-                console.log(err);
-                alert('An error has occured, if it persists, please try again later');
-            }
-        )
+        axios.post('http://localhost:3001/users/signup', {
+            username: username.value,
+            password: password.value,
+            firstname: firstname.value,
+            lastname: lastname.value
+        })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
         
     }
 

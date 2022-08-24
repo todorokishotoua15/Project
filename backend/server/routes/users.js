@@ -24,10 +24,11 @@ router.post('/signup', (req,res,next) => {
       username: req.body.username, 
       firstname: req.body.firstname,
       lastname: req.body.lastname,
-      rating : req.body.rating
+      rating : -1
       }), req.body.password,
         (err, user) => {
           if(err) {
+            console.log(err);
             res.statusCode = 500;
             res.setHeader('Content-Type', 'application/json');
             res.json({err: err});
@@ -55,8 +56,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
       }, (err) => {
         console.log(err);
       })
-    })
-    
+    }) 
 });
 
 router.post('/updrating', (req, res) => {

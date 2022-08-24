@@ -282,7 +282,7 @@ function CreateContest(props) {
                     <div className="col d-flex justify-content-center">
                         <p className="h1t1 h1t2 h1t3"> Use the button to add users. If the 
                             user entered is not valid then it will not be added in the list.
-                            It is not necessary for the participants to have an account 
+                            It is necessary for the participants to have an account 
                             on this site
                          </p>
                     </div>

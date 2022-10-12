@@ -15,6 +15,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var problemRouter = require('./routes/problems');
 
+
+
 var app = express();
 
 // view engine setup
@@ -36,7 +38,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors());
 
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "client", "build")));
 
 
 const url = process.env.MONGODB_URL;

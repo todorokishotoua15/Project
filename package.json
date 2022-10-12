@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "heroku-postbuild": "npm install && cd client && npm install",
-    "start": "node ./bin/www"
+    "start": "node ./bin/www && cd client && react-scripts start"
   },
   "engines": {
     "node": "16.13.2"

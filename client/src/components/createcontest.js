@@ -38,7 +38,7 @@ function CreateContest(props) {
 
     useEffect(() => {
         if (alluser.length === 0) {
-            fetch("http://localhost:3001/users")
+            fetch("https://zenseprojectcodecase.herokuapp.com/:3001/users")
             .then((res) => res.json())
             .then(
                 (res) => {

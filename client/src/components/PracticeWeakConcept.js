@@ -127,7 +127,7 @@ function PracticeWeakConcept() {
                 }
             )
         }
-        fetch("http://localhost:3001/problems/", {
+        fetch("https://zenseprojectcodecase.herokuapp.com/:3001/problems/", {
             method : 'get',
             headers: new Headers({
                 Authorization: "Bearer " + localStorage.getItem('token'),
@@ -215,7 +215,7 @@ function PracticeWeakConcept() {
         if (pendprob + 8 <= 50) {
             console.log(temp);
             setadded(temp);
-            axios.post('http://localhost:3001/problems/upd', {
+            axios.post('https://zenseprojectcodecase.herokuapp.com/:3001/problems/upd', {
                 username: localStorage.getItem('username'),
                 problems: temp
             }).then((res) => {

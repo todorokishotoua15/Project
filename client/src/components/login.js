@@ -50,14 +50,14 @@ function Login(props) {
             var result = res.result[0];
             rating = result.rating;
             console.log(rating);
-            axios.post("https://zenseprojectcodecase.herokuapp.com/:3001/users/updrating", {
+            axios.post("https://zenseprojectcodecase.herokuapp.com/users/updrating", {
                 username : username.value,
                 rating: rating
             })
             .then(
                 (res) => {
                     console.log(res);
-                    axios.post('https://zenseprojectcodecase.herokuapp.com/:3001/users/login', {
+                    axios.post('https://zenseprojectcodecase.herokuapp.com/users/login', {
                         username: username.value,
                         password: password.value,
                         rating: rating
@@ -79,7 +79,7 @@ function Login(props) {
             )
             
         }, (err) => {
-            axios.post('https://zenseprojectcodecase.herokuapp.com/:3001/users/login', {
+            axios.post('https://zenseprojectcodecase.herokuapp.com/users/login', {
                 username: username.value,
                 password: password.value,
                 rating : -1
@@ -105,7 +105,7 @@ function Login(props) {
 
     function signup() {
         toggleModal2();
-        axios.post('https://zenseprojectcodecase.herokuapp.com/:3001/users/signup', {
+        axios.post('https://zenseprojectcodecase.herokuapp.com/users/signup', {
             username: username.value,
             password: password.value,
             firstname: firstname.value,

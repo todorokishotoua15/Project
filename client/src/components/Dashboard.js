@@ -60,7 +60,7 @@ function Dashboard(props) {
                 }
             )
         }
-        fetch("https://zenseprojectcodecase.herokuapp.com/:3001/problems/", {
+        fetch("https://zenseprojectcodecase.herokuapp.com/problems/", {
             method : 'get',
             headers: new Headers({
                 Authorization: "Bearer " + localStorage.getItem('token'),
@@ -81,7 +81,7 @@ function Dashboard(props) {
 
     useEffect(() => {
         if (!ploaded) {
-            fetch("https://zenseprojectcodecase.herokuapp.com/:3001/problems", {
+            fetch("https://zenseprojectcodecase.herokuapp.com/problems", {
                 method: 'get',
                 headers: new Headers({
                     "authorization": "Bearer " + localStorage.getItem('token'),

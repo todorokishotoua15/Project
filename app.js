@@ -38,9 +38,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors());
 
-app.use(express.static(path.join(__dirname, "client", "public")));
+app.use(express.static(path.join(__dirname, "client", "build")));
 app.get("*", (req,res) => {
-  res.sendFile(path.join(__dirname, "client", "public", "index.html"));
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
 
